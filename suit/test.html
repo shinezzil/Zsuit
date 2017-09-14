@@ -1,0 +1,194 @@
+<!---
+<?php
+	//这里仅作为PHP服务端示例，下方html中并未遍历以下信息
+	$newArr		= array(
+		1 => array('name'=>'7成新'),
+		2 => array('name'=>'8成新'),
+		3 => array('name'=>'9成新'),
+		4 => array('name'=>'全新'),
+	);
+	$colorArr 	= array(
+		1 => array('name'=>'白色'),
+		2 => array('name'=>'金色'),
+		3 => array('name'=>'黑色'),
+	);
+	$suitArr	= array(
+		10 => array('name'=>'256GB'),
+		11 => array('name'=>'128GB'),
+	);
+
+	//假设存在已设置的套装信息如下
+	$hasSuitInfo	= array(
+		'123' => '1_2_10', //db中唯一套装ID => 7成新_金色_256GB
+		'234' => '1_3_11', //db中唯一套装ID => 7成新_黑色_128GB
+		'345' => '2_3_10',
+		'456' => '3_1_11',
+		'789' => '4_1_10', 	
+	);
+
+	//默认选中的套装(可没有):7成新_黑色_128GB
+	$defaultSuitJson 	= json_encode(array(1,3,11));
+?>
+-->
+
+<html>
+	<head>
+		<meta charset="utf8">
+		<title>套装筛选测试</title>
+		<link href="./css/suit.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+  	<div class="wrapper clearfix">
+  		<div class="deal-section">
+   			<div class="dealinfor">
+  				<div class="sku">
+			        <dl>
+			            <dt>成色</dt>
+			            <dd>
+			              	<ul class="options-item clearfix">
+				                <li num="0" fn="click" note="整机磨损严重，硬件功能正常，不影响正常使用" optionvalueid="1" class="">
+					                <span class="">7成新</span>
+					                <i></i>
+				                </li>
+				                <li num="0" fn="click" note="有较明显使用痕迹，无功能故障，屏幕电池损耗正常" optionvalueid="2" class="">
+				                  	<span class="">8成新</span>
+				                  	<i></i>
+				                </li>
+				                <li num="0" fn="click" note="有轻微使用痕迹，无功能故障，屏幕电池损耗正常" optionvalueid="3" class="">
+				                  	<span class="">9成新</span>
+				                  	<i></i>
+				                </li>
+				                <li num="0" fn="click" note="全新未拆封、无可挑剔" optionvalueid="4" class="">
+				                  	<span class="">全新</span>
+				                  	<i></i>
+				                </li>
+			              	</ul>
+			            </dd>
+			        </dl>
+
+				    <dl>
+				        <dt>颜色</dt>
+				        <dd>
+				          	<ul class="options-item clearfix">
+				            	<li num="1" fn="click" note="" optionvalueid="1" class="">
+				              		<span class="">白色</span>
+				              		<i></i>
+				            	</li>
+				            	<li num="1" fn="click" note="" optionvalueid="2" class="">
+				              		<span class="">金色</span>
+				              		<i></i>
+				            	</li>
+				            	<li num="1" fn="click" note="" optionvalueid="3" class="">
+				              		<span class="">黑色</span>
+				              		<i></i>
+				            	</li>  
+				          	</ul>
+				        </dd>
+				    </dl>
+
+			        <dl>
+			            <dt>内存容量</dt>
+			            <dd>
+			              	<ul class="options-item clearfix">
+			                	<li num="2" fn="click" note="" optionvalueid="10" class="">
+			                  		<span class="">256GB</span>
+			                  		<i></i>
+			                	</li>
+			                	<li num="2" fn="click" note="" optionvalueid="11" class="">
+			                  		<span class="">128GB</span>
+			                  		<i></i>
+			                	</li>
+			              	</ul>
+			            </dd>
+			        </dl>
+          			<a href="javascript:void(0);" class="buy-now">立即购买</a>
+  		  		</div>
+      		</div>
+  		</div>
+  	</div>
+  	<script type="text/javascript" src="./js/jquery-1.8.1.js"></script>
+  	<script type="text/javascript" src="./js/ZsSuit.js"></script>
+
+  	<!-- 套装中不可选样式span.disabled  选中样式li.current  -->
+	<script>
+	    var defaultSuitJSON          = eval(["1","3","11"]), //默认套装
+	    	suitRuleInfo             = eval({"123":"1_2_10","234":"1_3_11","345":"2_3_10","456":"3_1_11","789":"4_1_10"}); //已有套装
+        
+        //1. 配置已有套装参数
+        var zsSuit  = new ZsSuit();
+        zsSuit.config({'suitRuleInfo':suitRuleInfo});
+
+        //设置回调函数，data表示不可选层级，skuId表示确定了唯一套装ID
+        //每一次操作，都会触发此函数的回调
+        zsSuit.callBack = function(data, skuId){
+            //可选与不可选
+            for(var i in data){
+                $(".sku").find("[num="+i+"]").each(function(){
+                    var that    = $(this),
+                        curVal  = that.attr("optionValueId");
+
+                    if(zsSuit.inArr(curVal, data[i]) < 0){
+                        that.find("span").attr("class","");
+                    }else{
+                        that.find("span").attr("class","disabled");
+                    }
+                });
+            }
+            if(skuId){
+                $(".buy-now").removeClass("buy-now-disabled");
+            }else{
+            	$(".buy-now").addClass("buy-now-disabled");
+            }
+        };
+        
+        //套装选择事件
+        $("li[fn='click']").click(function(){
+            var that            = $(this),
+                curVal          = that.attr("optionValueId"),
+                position        = that.attr("num"),
+                chooseFlag      = that.hasClass("current"),
+                canNotClick     = that.find("span").hasClass("disabled");
+
+            //是否可点击
+            if(canNotClick){
+                return false;
+            }
+
+            //判断选择
+            if(chooseFlag){
+                zsSuit.chooseCancel(1,position,curVal);//样式变化
+                zsSuit.unset(position, curVal);
+            }else{
+            	zsSuit.chooseCancel(2,position,curVal);//重新选中
+            	zsSuit.set(position,curVal);
+            }
+        });
+
+        //套装选择导致的样式变化
+        zsSuit.chooseCancel = function(type,position,val){
+            $(".sku").find("[num="+position+"]").each(function(){
+                var that    = $(this),
+                    curVal  = that.attr("optionValueId");
+
+                //type操作 1取消 2选中
+                if(curVal == val){
+                    if(type == 1){
+                        that.removeClass("current");
+                    }else{
+                        that.addClass("current").siblings().removeClass("current");
+                    }
+                }
+            });
+        }
+
+        //设置默认套装
+        if(defaultSuitJSON){
+            for(var position in defaultSuitJSON){
+                zsSuit.chooseCancel(2,position,defaultSuitJSON[position]);//重新选中
+            	zsSuit.set(position,defaultSuitJSON[position]);
+            }
+        }
+        
+	</script>
+	</body>
+</html>

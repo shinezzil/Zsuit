@@ -1,0 +1,22 @@
+
+.options-item i{ background:url(../images/detail.png) no-repeat;}
+
+.deal-section{ padding:10px 0 70px 40px; float:left; width:600px;}
+
+.dealinfor dl{ position:relative; zoom:1; margin:0 0 6px; font:12px/28px "Microsoft YaHei","\5FAE\8F6F\96C5\9ED1"; color:#666;}
+.dealinfor dt{ position:absolute; top:0; left:0; color:#999;}
+.dealinfor dd{ padding:0px;}
+
+.dealinfor .sku{ padding:15px 0 0; border-top:1px dotted #d2d2d2;}
+.dealinfor .sku dl{ margin:0 0 12px; height:35px;}
+
+.options-item li{ float:left; margin:0 10px 8px 0; position:relative; zoom:1; list-style: none;}
+.options-item li span{ display:inline-block; padding:0 10px; height:26px; white-space:nowrap; font:12px/26px "Microsoft YaHei","\5FAE\8F6F\96C5\9ED1"; border:1px solid #d9d9d9; color:#333; cursor:pointer;}
+.options-item li:hover span,.options-item .current span{ padding:0 9px; height:24px; border:2px solid #ef4035; line-height:24px;}
+.options-item li .disabled,.options-item li:hover .disabled{ padding:0 10px; height:26px; line-height:26px; border:1px dashed #d9d9d9; cursor:not-allowed;}
+.options-item i{ display:none; position:absolute; right:2px; bottom:2px; width:10px; height:10px; background-position:-69px -207px;}
+.options-item .current i{ display:block;}
+
+.buy-now,.buy-now-disabled{ float:left; text-decoration: none; margin:0 0 0 15px; width:128px; height:45px; font:14px/45px "Microsoft YaHei","\5FAE\8F6F\96C5\9ED1"; text-align:center; color:#fff; background:#ef4035;}
+.buy-now:hover{ background:#e03528; color:#fff; text-decoration:none;}
+.buy-now-disabled{ background:#d9d9d9;}
