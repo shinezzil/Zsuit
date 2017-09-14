@@ -17,7 +17,7 @@
     zsSuit.set(1, 3);//第二层级，选中了值为3的选项
 
     //取消层级设置
-    zsSuit.unset();
+    zsSuit.unset(1);
 
     //设置回调,名称是插件指定的，不可变
     zsSuit.callBack = function(data,skuId){}
@@ -50,13 +50,15 @@
 4.套装选择事件
 ```javascript
     $("li[fn='click']").click(function(){
-        var _self           = $(this),
-            chooseFlag      = _self.hasClass("current");
+        var _self       = $(this),
+            position    = _self.attr("num"),
+            curVal      = _self.attr("val"),
+            chooseFlag  = _self.hasClass("current");
         //取消还是设置
         if(chooseFlag){
             zsSuit.unset(position, curVal);
         }else{
-            zsSuit.set(position,curVal);
+            zsSuit.set(position);
         }
     });
 ```
