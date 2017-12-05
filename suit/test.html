@@ -1,5 +1,14 @@
 <!---
 <?php
+	//假如你数据库数据存储格式如下
+	$suitInfo 	= array(
+		'123'  => array('suitId'=>123, 'new'=>1, 'color'=>2, 'suit'=>10),
+		'234'  => array('suitId'=>234, 'new'=>1, 'color'=>3, 'suit'=>11),
+		'345'  => array('suitId'=>345, 'new'=>2, 'color'=>3, 'suit'=>10),
+		'456'  => array('suitId'=>456, 'new'=>3, 'color'=>1, 'suit'=>11),
+		'789'  => array('suitId'=>789, 'new'=>4, 'color'=>1, 'suit'=>10),
+	),
+	
 	//这里仅作为PHP服务端示例，下方html中并未遍历以下信息
 	$newArr		= array(
 		1 => array('name'=>'7成新'),
@@ -17,7 +26,7 @@
 		11 => array('name'=>'128GB'),
 	);
 
-	//假设存在已设置的套装信息如下
+	//将已存在的套装信息转换为层级关系如下
 	$hasSuitInfo	= array(
 		'123' => '1_2_10', //db中唯一套装ID => 7成新_金色_256GB
 		'234' => '1_3_11', //db中唯一套装ID => 7成新_黑色_128GB
